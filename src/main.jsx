@@ -8,6 +8,7 @@ import TaskList from './components/TaskList.jsx';
 import TaskItem from './components/TaskItem.jsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.js';
+import TaskDetails from './components/TaskDetails.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,8 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       { path: '/addtask', element: <AddTask /> },
       { path: '/tasklist', element: <TaskList /> },
-      { path: '/task/:id', element: <TaskItem /> },
+      { path: '/tasks', element: <TaskItem /> },
+      { path: '/task/:id', element: <TaskDetails /> },
     ],
   },
 ]);
