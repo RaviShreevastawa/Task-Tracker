@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFilteredTasks } from '../features/taskFilter';
-import { setFilter, toggleStatus, deleteTask } from '../features/taskSlice';
+import { selectFilteredTasks } from '../store/taskFilter';
+import { setFilter, toggleStatus, deleteTask } from '../store/taskSlice';
 import { Link } from 'react-router-dom';
 
 const TaskList = () => {

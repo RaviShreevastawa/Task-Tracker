@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTask, updateDescription } from '../features/taskSlice';
-import { selectFilteredTasks } from '../features/taskFilter';
+import { deleteTask, updateDescription } from '../store/taskSlice';
+import { selectFilteredTasks } from '../store/taskFilter';
 import { useState } from 'react';
 
 const TaskItem = () => {
