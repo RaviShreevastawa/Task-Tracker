@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask } from '../store/taskSlice';
+import { toast } from 'react-toastify';
 
 const AddTask = () => {
   const [title, setTitle] = useState('');
@@ -9,10 +10,20 @@ const AddTask = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !description) return;
-    dispatch(addTask({ title, description }));
-    setTitle('');
-    setDescription('');
+
+    if (!title.trim() || !description.trim()){
+      toast.error('Please enter title and description');
+      return 
+    } 
+      
+     try {
+      dispatch(addTask({ title, description }));
+      toast.success('Task added successfully!');
+      setTitle('');
+      setDescription('');
+     } catch (error) {
+      toast.error("Something went wrong when adding the Task !!")
+     }
   };
 
   return (
@@ -20,8 +31,15 @@ const AddTask = () => {
       <h2 className="text-2xl font-semibold mb-4 text-blue-700">Add New Task</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Title</label>
+          <label 
+          htmlFor="task-title"
+          className="block text-gray-700 font-medium mb-1"
+          >
+            Title
+          </label>
           <input
+            id='task-title'
+            name='title'
             type="text"
             placeholder="Enter task title"
             value={title}
@@ -31,8 +49,15 @@ const AddTask = () => {
         </div>
 
         <div>
-          <label className="block text-gray-700 font-medium mb-1">Description</label>
+          <label 
+          htmlFor="task-desc"
+          className="block text-gray-700 font-medium mb-1"
+          >
+            Description
+          </label>
           <textarea
+            id="task-desc"
+            name='description'
             placeholder="Enter task description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}

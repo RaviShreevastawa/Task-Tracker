@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask, updateDescription } from '../store/taskSlice';
 import { selectFilteredTasks } from '../store/taskFilter';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const TaskItem = () => {
   const tasks = useSelector(selectFilteredTasks);
@@ -15,9 +16,24 @@ const TaskItem = () => {
   };
 
   const handleUpdate = (id) => {
-    if (editedDesc.trim() === '') return alert('Description cannot be empty');
-    dispatch(updateDescription({ id, newDescription: editedDesc }));
-    setEditId(null);
+    if (editedDesc.trim() === '') {
+      toast.error('Description cannot be empty');
+    }
+    
+    try {
+      dispatch(updateDescription({ id, newDescription: editedDesc }));
+      toast.success("Description Updated Successfully");
+      setEditId(null);
+    } catch (error) {
+      toast.error("something wrong when update Description !!")
+    }
+
+    
+  };
+  
+  const handleDelete = (id) => {
+    dispatch(deleteTask(id));
+    toast.success('Task deleted successfully!');
   };
 
   return (
@@ -37,9 +53,7 @@ const TaskItem = () => {
                 <h3 className="text-lg font-semibold">{task.title}</h3>
                 <span
                   className={`text-xs font-medium px-2 py-1 rounded ${
-                    task.completed
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
+                    task.completed ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
                   {task.completed ? 'Completed' : 'Pending'}
@@ -48,6 +62,8 @@ const TaskItem = () => {
 
               {editId === task.id ? (
                 <textarea
+                  id={`desc-${task.id}`}
+                  name={`description-${task.id}`}
                   value={editedDesc}
                   onChange={(e) => setEditedDesc(e.target.value)}
                   className="w-full border p-2 mb-2"
@@ -74,7 +90,7 @@ const TaskItem = () => {
                 )}
 
                 <button
-                  onClick={() => dispatch(deleteTask(task.id))}
+                  onClick={() => handleDelete(task.id)}
                   className="text-red-600 hover:underline text-sm"
                 >
                   Delete

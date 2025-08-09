@@ -2,19 +2,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectFilteredTasks } from '../store/taskFilter';
 import { setFilter, toggleStatus, deleteTask } from '../store/taskSlice';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const TaskList = () => {
   const tasks = useSelector(selectFilteredTasks);
   const filter = useSelector(state => state.tasks.filter);
   const dispatch = useDispatch();
 
+  const handleDelete = (id) => {
+    dispatch(deleteTask(id));
+    toast.success('Task deleted successfully!');
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-3xl font-bold text-blue-700 mb-6">Your Tasks</h2>
 
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Filter Tasks</label>
+        <label 
+        htmlFor="task-filter"
+        className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Filter Tasks
+        </label>
         <select
+          id="task-filter"
+          name="taskFilter"
           value={filter}
           onChange={(e) => dispatch(setFilter(e.target.value))}
           className="w-full md:w-60 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -41,18 +54,25 @@ const TaskList = () => {
                 </p>
                 <div className="mt-2 flex items-center space-x-2">
                   <input
+                    id={`toggle-${task.id}`}
+                    name={`toggleStatus-${task.id}`}
                     type="checkbox"
                     checked={task.completed}
                     onChange={() => dispatch(toggleStatus(task.id))}
                     className="accent-blue-500"
                   />
-                  <span className="text-sm text-gray-700">Toggle Status</span>
+                  <label 
+                  htmlFor={`toggle-${task.id}`}
+                  className="text-sm text-gray-700 cursor-pointer"
+                  >
+                    Toggle Status
+                  </label>
                 </div>
               </div>
 
               <div className="mt-4 md:mt-0 flex flex-col md:flex-row md:items-center gap-3">
                 <button
-                  onClick={() => dispatch(deleteTask(task.id))}
+                  onClick={() => handleDelete(task.id)}
                   className="text-red-600 hover:underline font-medium"
                 >
                   Delete
