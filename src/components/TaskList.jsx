@@ -9,9 +9,14 @@ const TaskList = () => {
   const filter = useSelector(state => state.tasks.filter);
   const dispatch = useDispatch();
 
+
   const handleDelete = (id) => {
-    dispatch(deleteTask(id));
-    toast.success('Task deleted successfully!');
+    try {
+      dispatch(deleteTask(id));
+      toast.success('Task deleted successfully!!');
+    } catch (error) {
+      toast.error("Something went wrong while delete the task !!");
+    }
   };
 
   return (

@@ -30,10 +30,10 @@ const TaskItem = () => {
 
     
   };
-  
+
   const handleDelete = (id) => {
     dispatch(deleteTask(id));
-    toast.success('Task deleted successfully!');
+    toast.success(`Task deleted successfully!`);
   };
 
   return (

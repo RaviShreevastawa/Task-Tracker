@@ -11,19 +11,29 @@ const AddTask = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()){
-      toast.error('Please enter title and description');
+    if (!title.trim() && !description.trim()){
+      toast.error('Please enter title and description !!');
       return 
     } 
+
+    if (!title.trim()) {
+      toast.error('title is Required !!');
+      return;
+    }
+
+    if (!description.trim()) {
+      toast.error('description is Required !!');
+      return;
+    }
       
-     try {
+    try {
       dispatch(addTask({ title, description }));
       toast.success('Task added successfully!');
       setTitle('');
       setDescription('');
      } catch (error) {
       toast.error("Something went wrong when adding the Task !!")
-     }
+    }
   };
 
   return (
@@ -46,6 +56,7 @@ const AddTask = () => {
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
         </div>
 
         <div>
